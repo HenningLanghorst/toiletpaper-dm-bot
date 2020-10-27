@@ -12,7 +12,10 @@ data class StoreAvailablityResponse(
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Store(val storeNumber: String?)
+data class Store(
+    val storeNumber: String?,
+    val address: Address?
+)
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -47,6 +50,16 @@ data class Address(
     val zip: String?,
     val city: String?
 ) {
-    val displayText: String get() = "$name\n$street\n${streetAdditional?.let { "$it\n" }?:""}$zip $city"
+    val displayText: String get() = "$name\n$street\n${streetAdditional?.let { "$it\n" } ?: ""}$zip $city"
 }
 
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class StoreLookupResponse(
+    val totalElements: Int,
+    val totalPages: Int,
+    val size: Int,
+    val page: Int,
+    val stores: List<Store>
+)

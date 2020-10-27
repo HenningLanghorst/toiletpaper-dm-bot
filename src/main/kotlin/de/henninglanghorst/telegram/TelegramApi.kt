@@ -1,7 +1,9 @@
 package de.henninglanghorst.telegram
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import org.slf4j.LoggerFactory
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -24,20 +26,24 @@ interface TelegramApi {
         val instance: TelegramApi by lazy {
             val token = System.getProperty("token")
             Retrofit.Builder()
-                .client(OkHttpClient.Builder()
-                    .addInterceptor { chain ->
-                        val method = chain.request().method()
-                        val sanitizedUrl = chain.request().url().toString().replace(token, "****")
-                        log.info("$method $sanitizedUrl")
-                        val response = chain.proceed(chain.request())
-                        log.info("Response code: ${response.code()}")
-                        response
-                    }
-                    .build())
+                .client(
+                    OkHttpClient.Builder()
+                        .addInterceptor(loggingInterceptor(token))
+                        .build()
+                )
                 .addConverterFactory(JacksonConverterFactory.create(jacksonObjectMapper()))
                 .baseUrl("https://api.telegram.org/bot$token/")
                 .build()
                 .create(TelegramApi::class.java)
+        }
+
+        private fun loggingInterceptor(token: String): (Interceptor.Chain) -> Response = { chain ->
+            val method = chain.request().method()
+            val sanitizedUrl = chain.request().url().toString().replace(token, "****")
+            log.info("$method $sanitizedUrl")
+            val response = chain.proceed(chain.request())
+            log.info("Response code: ${response.code()}")
+            response
         }
     }
 

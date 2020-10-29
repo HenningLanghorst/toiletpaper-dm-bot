@@ -2,6 +2,7 @@ package de.henninglanghorst.dm
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -24,6 +25,17 @@ interface DmApi {
         @Query("storeNumbers") storeNumbers: String
     ): Call<StoreAvailablityResponse>
 
+    @GET("https://products.dm.de/product/de/products/dans/{dans}")
+    fun productInformation(@Path("dans") articleNumbers: String): Call<JsonNode>
+
+    @GET("https://products.dm.de/product/de/search")
+    fun search(
+        @Query("productQuery") productQuery: String,
+        @Query("purchasableOnly") purchasableOnly: Boolean,
+        @Query("pageSize") pageSize: Int,
+        @Query("currentPage") currentPage: Int?
+    )
+
     @GET("https://store-data-service.services.dmtech.com/stores/bbox/{gpsRectangle}")
     fun lookupStores(@Path("gpsRectangle") gpsRectangle: String): Call<StoreLookupResponse>
 
@@ -41,9 +53,9 @@ interface DmApi {
 
         private val loggingInterceptor
             get(): (Interceptor.Chain) -> Response = { chain ->
-                log.info("${chain.request().method()} ${chain.request().url()}")
+                log.debug("${chain.request().method()} ${chain.request().url()}")
                 val response = chain.proceed(chain.request())
-                log.info("Response code: ${response.code()}")
+                log.debug("Response code: ${response.code()}")
                 response
             }
 

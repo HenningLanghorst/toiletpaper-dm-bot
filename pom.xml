@@ -16,6 +16,7 @@
         <kotlin.version>1.4.10</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
         <junit.version>4.12</junit.version>
+        <ktor.version>1.4.1</ktor.version>
     </properties>
 
     <dependencies>
@@ -57,6 +58,24 @@
             <artifactId>jackson-dataformat-csv</artifactId>
             <version>2.11.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-server-core</artifactId>
+            <version>${ktor.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-jackson</artifactId>
+            <version>${ktor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-server-netty</artifactId>
+            <version>${ktor.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>

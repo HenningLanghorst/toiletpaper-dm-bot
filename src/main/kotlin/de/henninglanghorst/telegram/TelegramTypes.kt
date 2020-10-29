@@ -4,6 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
+
+data class WebhookResponse(
+    @JsonProperty("ok") val ok: Boolean,
+    @JsonProperty("result") val result: Boolean,
+    @JsonProperty("description") val description: String?
+)
+
 data class UpdateResponse(
     @JsonProperty("ok") val ok: Boolean,
     @JsonProperty("result") val result: List<Update>

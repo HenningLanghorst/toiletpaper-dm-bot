@@ -23,12 +23,12 @@ object PlaceFinder {
                             longitude = it[INDEX_LONGITUDE].toDouble()
                         )
                     }.toList()
-            }.also { log.info("Number of places: {} ", it.size) }
+            }.also { log.debug("Number of places: {} ", it.size) }
     }
 
     fun searchLocation(searchString: String) =
         PLACES.firstOrNull { it.zip == searchString || it.placeName == searchString }
-            .also { log.info("Resolved location: {}", it) }
+            .also { log.debug("Resolved location: {}", it) }
 
 }
 

@@ -1,6 +1,7 @@
 package de.henninglanghorst.telegram
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import de.henninglanghorst.ConfigProperties.token
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -15,16 +16,21 @@ import retrofit2.http.Query
 
 interface TelegramApi {
 
-    @GET("getUpdates")
-    fun getUpdates(@Query("offset") offset: Int? = null, @Query("limit") limit: Int? = null): Call<UpdateResponse>
-
     @POST("sendMessage")
     fun sendMessage(@Body sendMessageRequest: SendMessageRequest): Call<SendMessageResponse>
+
+    @GET("setWebhook")
+    fun setWebhook(
+        @Query("url") url: String,
+        @Query("max_connections") maConnections: Int? = null
+    ): Call<WebhookResponse>
+
+    @GET("deleteWebhook")
+    fun deleteWebhook(): Call<WebhookResponse>
 
     companion object {
         private val log = LoggerFactory.getLogger(TelegramApi::class.java)
         val instance: TelegramApi by lazy {
-            val token = System.getProperty("token")
             Retrofit.Builder()
                 .client(
                     OkHttpClient.Builder()
@@ -40,9 +46,9 @@ interface TelegramApi {
         private fun loggingInterceptor(token: String): (Interceptor.Chain) -> Response = { chain ->
             val method = chain.request().method()
             val sanitizedUrl = chain.request().url().toString().replace(token, "****")
-            log.info("$method $sanitizedUrl")
+            log.debug("$method $sanitizedUrl")
             val response = chain.proceed(chain.request())
-            log.info("Response code: ${response.code()}")
+            log.debug("Response code: ${response.code()}")
             response
         }
     }

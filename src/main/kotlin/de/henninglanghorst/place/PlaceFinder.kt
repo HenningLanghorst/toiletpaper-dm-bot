@@ -13,28 +13,28 @@ object PlaceFinder {
 
     private val PLACES: List<Place> by lazy {
         FileReader(System.getProperty("places"))
-            .useLines { lines ->
-                lines.map { it.split('\t').toList() }
-                    .map {
-                        Place(
-                            zip = it[INDEX_ZIP],
-                            placeName = it[INDEX_PLACE_NAME],
-                            latitude = it[INDEX_LATITUDE].toDouble(),
-                            longitude = it[INDEX_LONGITUDE].toDouble()
-                        )
-                    }.toList()
-            }.also { log.debug("Number of places: {} ", it.size) }
+                .useLines { lines ->
+                    lines.map { it.split('\t').toList() }
+                            .map {
+                                Place(
+                                        zip = it[INDEX_ZIP],
+                                        placeName = it[INDEX_PLACE_NAME],
+                                        latitude = it[INDEX_LATITUDE].toDouble(),
+                                        longitude = it[INDEX_LONGITUDE].toDouble()
+                                )
+                            }.toList()
+                }.also { log.debug("Number of places: {} ", it.size) }
     }
 
     fun searchLocation(searchString: String) =
-        PLACES.firstOrNull { it.zip == searchString || it.placeName == searchString }
-            .also { log.debug("Resolved location: {}", it) }
+            PLACES.firstOrNull { it.zip == searchString || it.placeName == searchString }
+                    .also { log.debug("Resolved location: {}", it) }
 
 }
 
 data class Place(
-    val zip: String,
-    val placeName: String,
-    val latitude: Double,
-    val longitude: Double
+        val zip: String,
+        val placeName: String,
+        val latitude: Double,
+        val longitude: Double
 )

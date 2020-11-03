@@ -21,8 +21,8 @@ interface TelegramApi {
 
     @GET("setWebhook")
     fun setWebhook(
-        @Query("url") url: String,
-        @Query("max_connections") maConnections: Int? = null
+            @Query("url") url: String,
+            @Query("max_connections") maConnections: Int? = null
     ): Call<WebhookResponse>
 
     @GET("deleteWebhook")
@@ -32,15 +32,15 @@ interface TelegramApi {
         private val log = LoggerFactory.getLogger(TelegramApi::class.java)
         val instance: TelegramApi by lazy {
             Retrofit.Builder()
-                .client(
-                    OkHttpClient.Builder()
-                        .addInterceptor(loggingInterceptor(token))
-                        .build()
-                )
-                .addConverterFactory(JacksonConverterFactory.create(jacksonObjectMapper()))
-                .baseUrl("https://api.telegram.org/bot$token/")
-                .build()
-                .create(TelegramApi::class.java)
+                    .client(
+                            OkHttpClient.Builder()
+                                    .addInterceptor(loggingInterceptor(token))
+                                    .build()
+                    )
+                    .addConverterFactory(JacksonConverterFactory.create(jacksonObjectMapper()))
+                    .baseUrl("https://api.telegram.org/bot$token/")
+                    .build()
+                    .create(TelegramApi::class.java)
         }
 
         private fun loggingInterceptor(token: String): (Interceptor.Chain) -> Response = { chain ->

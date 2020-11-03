@@ -48,12 +48,12 @@ fun main() {
 private fun TelegramApi.configureWebhook() {
 
     setWebhook(webhookUrl).execute()
-        .also { log.info("Create webhook result: {}", it.body() ?: it.errorBody()) }
+            .also { log.info("Create webhook result: {}", it.body() ?: it.errorBody()) }
 
     Runtime.getRuntime().addShutdownHook(
-        Thread {
-            deleteWebhook().execute()
-                .also { log.info("Delete webhook result: {}", it.body() ?: it.errorBody()) }
-        })
+            Thread {
+                deleteWebhook().execute()
+                        .also { log.info("Delete webhook result: {}", it.body() ?: it.errorBody()) }
+            })
 }
 

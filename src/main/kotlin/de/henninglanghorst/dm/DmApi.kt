@@ -2,7 +2,6 @@ package de.henninglanghorst.dm
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -21,20 +20,17 @@ interface DmApi {
 
     @GET("https://products.dm.de/store-availability/DE/availability")
     fun storeAvailabilty(
-        @Query("dans") articleNumbers: String,
-        @Query("storeNumbers") storeNumbers: String
+            @Query("dans") articleNumbers: String,
+            @Query("storeNumbers") storeNumbers: String
     ): Call<StoreAvailablityResponse>
-
-    @GET("https://products.dm.de/product/de/products/dans/{dans}")
-    fun productInformation(@Path("dans") articleNumbers: String): Call<JsonNode>
 
     @GET("https://products.dm.de/product/de/search")
     fun search(
-        @Query("productQuery") productQuery: String,
-        @Query("purchasableOnly") purchasableOnly: Boolean,
-        @Query("pageSize") pageSize: Int,
-        @Query("currentPage") currentPage: Int?
-    )
+            @Query("productQuery") productQuery: String,
+            @Query("purchasableOnly") purchasableOnly: Boolean,
+            @Query("pageSize") pageSize: Int,
+            @Query("currentPage") currentPage: Int? = null
+    ): Call<ProductSearchResponse>
 
     @GET("https://store-data-service.services.dmtech.com/stores/bbox/{gpsRectangle}")
     fun lookupStores(@Path("gpsRectangle") gpsRectangle: String): Call<StoreLookupResponse>
@@ -44,11 +40,11 @@ interface DmApi {
 
         val instance: DmApi by lazy {
             Retrofit.Builder()
-                .addConverterFactory(JacksonConverterFactory.create(jacksonObjectMapper()))
-                .client(OkHttpClient.Builder().addInterceptor(loggingInterceptor).build())
-                .baseUrl("https://products.dm.de/")
-                .build()
-                .create(DmApi::class.java)
+                    .addConverterFactory(JacksonConverterFactory.create(jacksonObjectMapper()))
+                    .client(OkHttpClient.Builder().addInterceptor(loggingInterceptor).build())
+                    .baseUrl("https://products.dm.de/")
+                    .build()
+                    .create(DmApi::class.java)
         }
 
         private val loggingInterceptor

@@ -11,11 +11,11 @@ mvn install
 
 Start the built fat jar from target folder. You must set the following properties:
 
-| Property | Description                                                                                                | 
-| -------- | ---------------------------------------------------------------------------------------------------------- |
-| token    | The token you got from the [Botfather](https://t.me/Botfather) for your bot.                               |
-| places   | Path to locations file from [GeoNames](https://download.geonames.org/). Download [DE.zip](https://download.geonames.org/export/dump/DE.zip), extract it somewhere and reference it.
-| hostname | Host name of web server needed for webhook which will be configured as `https://$hostname/telegram/$token` |  
+| Property | Description                                                                                                                                                                         | 
+|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| token    | The token you got from the [Botfather](https://t.me/Botfather) for your bot.                                                                                                        |
+| places   | Path to locations file from [GeoNames](https://download.geonames.org/). Download [DE.zip](https://download.geonames.org/export/dump/DE.zip), extract it somewhere and reference it. |
+| hostname | Host name of web server needed for webhook which will be configured as `https://$hostname/telegram/$token`                                                                          |  
 
   
 
